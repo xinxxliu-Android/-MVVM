@@ -56,6 +56,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
 
         binding.tvRegister.setOnClickListener {
             updateTabUI(false)
+
             binding.viewFlipper.displayedChild = 1 // 显示注册表单
         }
     }
