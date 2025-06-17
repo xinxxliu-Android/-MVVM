@@ -24,6 +24,7 @@ class MyApp : Application() {
             initSigMobSdk()
         }
         XCrash.init(this)
+//        MMKV
         MMKV.initialize(this)
     }
 
