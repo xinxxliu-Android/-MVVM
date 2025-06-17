@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.mvvmdemo.vm.LoginViewModel" />
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".LoginActivity">
+        <!-- 顶部指南线 -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.15" />
+
+        <!-- 左侧指南线 -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.1" />
+
+        <!-- 右侧指南线 -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.9" />
+
+        <!-- Logo -->
+        <TextView
+            android:id="@+id/tv_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="logo"
+            android:textColor="#4285F4"
+            android:textSize="36sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toTopOf="@+id/tab_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guideline_top"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintVertical_bias="0.1" />
+
+        <!-- 登录/注册选项卡 -->
+        <LinearLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_logo"
+            app:layout_constraintBottom_toTopOf="@+id/view_flipper"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintVertical_bias="0.0">
+
+            <TextView
+                android:id="@+id/tv_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:paddingStart="20dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="8dp"
+                android:text="登录"
+                android:textColor="@{viewModel.isLoginSelected ? @android:color/black : @android:color/darker_gray}"
+                android:onClick="@{() -> viewModel.onLoginTabSelected()}" />
+
+            <TextView
+                android:id="@+id/tv_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:paddingStart="20dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="8dp"
+                android:text="注册"
+                android:textColor="@{viewModel.isLoginSelected ? @android:color/darker_gray : @android:color/black}"
+                android:onClick="@{() -> viewModel.onRegisterTabSelected()}" />
+        </LinearLayout>
+
+        <!-- ViewFlipper用于切换登录和注册表单 -->
+        <ViewFlipper
+            android:id="@+id/view_flipper"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toEndOf="@id/guideline_right"
+            app:layout_constraintStart_toStartOf="@id/guideline_left"
+            app:layout_constraintTop_toBottomOf="@+id/tab_layout"
+            android:displayedChild="@{viewModel.isLoginSelected ? 0 : 1}">
+
+            <!-- 登录表单 -->
+            <LinearLayout
+                android:id="@+id/login_form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- 手机号输入框 -->
+                <EditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:drawableStart="@android:drawable/ic_menu_call"
+                    android:drawablePadding="8dp"
+                    android:hint="请输入手机号"
+                    android:inputType="phone"
+                    android:padding="12dp"
+                    android:text="@={viewModel.phone}" />
+
+                <!-- 密码输入框 -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp">
+
+                    <EditText
+                        android:id="@+id/et_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:drawableStart="@android:drawable/ic_lock_idle_lock"
+                        android:drawablePadding="8dp"
+                        android:hint="请输入密码"
+                        android:inputType="@{viewModel.isPasswordVisible ? android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD : android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD}"
+                        android:padding="12dp"
+                        android:text="@={viewModel.password}" />
+
+                    <!-- 显示密码按钮 -->
+                    <ImageView
+                        android:id="@+id/iv_password_toggle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="8dp"
+                        android:src="@{viewModel.isPasswordVisible ? @drawable/ic_visibility_off : @drawable/ic_visibility}"
+                        android:onClick="@{() -> viewModel.togglePasswordVisibility()}" />
+                </FrameLayout>
+
+                <!-- 登录按钮 -->
+                <Button
+                    android:id="@+id/btn_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:background="#4285F4"
+                    android:text="登录"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:onClick="@{() -> viewModel.login()}"
+                    android:enabled="@{!viewModel.isLoading}" />
+            </LinearLayout>
+
+            <!-- 注册表单 -->
+            <LinearLayout
+                android:id="@+id/register_form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- 用户名输入框 -->
+                <EditText
+                    android:id="@+id/et_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:drawableStart="@android:drawable/ic_menu_myplaces"
+                    android:drawablePadding="8dp"
+                    android:hint="请输入用户名"
+                    android:inputType="text"
+                    android:padding="12dp"
+                    android:text="@={viewModel.username}" />
+
+                <!-- 密码输入框 -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp">
+
+                    <EditText
+                        android:id="@+id/et_reg_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:drawableStart="@android:drawable/ic_lock_idle_lock"
+                        android:drawablePadding="8dp"
+                        android:hint="请输入密码"
+                        android:inputType="@{viewModel.isRegPasswordVisible ? android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD : android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD}"
+                        android:padding="12dp"
+                        android:text="@={viewModel.regPassword}" />
+
+                    <!-- 显示密码按钮 -->
+                    <ImageView
+                        android:id="@+id/iv_reg_password_toggle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="8dp"
+                        android:src="@{viewModel.isRegPasswordVisible ? @drawable/ic_visibility_off : @drawable/ic_visibility}"
+                        android:onClick="@{() -> viewModel.toggleRegPasswordVisibility()}" />
+                </FrameLayout>
+
+                <!-- 确认密码输入框 -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp">
+
+                    <EditText
+                        android:id="@+id/et_confirm_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:drawableStart="@android:drawable/ic_lock_idle_lock"
+                        android:drawablePadding="8dp"
+                        android:hint="请确认密码"
+                        android:inputType="@{viewModel.isConfirmPasswordVisible ? android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD : android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD}"
+                        android:padding="12dp"
+                        android:text="@={viewModel.confirmPassword}" />
+
+                    <!-- 显示密码按钮 -->
+                    <ImageView
+                        android:id="@+id/iv_confirm_password_toggle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="8dp"
+                        android:src="@{viewModel.isConfirmPasswordVisible ? @drawable/ic_visibility_off : @drawable/ic_visibility}"
+                        android:onClick="@{() -> viewModel.toggleConfirmPasswordVisibility()}" />
+                </FrameLayout>
+
+                <!-- 注册按钮 -->
+                <Button
+                    android:id="@+id/btn_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:background="#4285F4"
+                    android:text="注册"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:onClick="@{() -> viewModel.register()}"
+                    android:enabled="@{!viewModel.isLoading}" />
+            </LinearLayout>
+        </ViewFlipper>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
