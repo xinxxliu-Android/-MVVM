@@ -12,6 +12,9 @@ import com.example.mvvmdemo.net.UiState
 import com.example.mvvmdemo.utils.UserManager
 import com.example.mvvmdemo.vm.LoginViewModel
 
+/**
+ * 登录界面
+ */
 class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
     override val viewModel: LoginViewModel by viewModels()
 
