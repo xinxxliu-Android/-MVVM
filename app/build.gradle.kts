@@ -80,7 +80,6 @@ dependencies {
     implementation (libs.androidx.core.splashscreen)
 //    刷新控件
     implementation (libs.github.refresh.layout.kernel)
-//    刷新头
     implementation (libs.io.github.scwang90.refresh.header.classics)
     implementation (libs.io.github.scwang90.refresh.footer.classics)
 //    65535

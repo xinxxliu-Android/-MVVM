@@ -1,5 +1,6 @@
 package com.example.mvvmdemo
 
+import LocaleManager
 import android.app.Activity
 import android.app.Application
 import android.content.Context
@@ -18,9 +19,8 @@ import com.tencent.mmkv.MMKV
 import xcrash.XCrash
 
 class MyApp : Application() {
-
+    private lateinit var localeManager: LocaleManager
     companion object {
-        //static 代码段可以防止内存泄露
         init {
             //设置全局的Header构建器
             SmartRefreshLayout.setDefaultRefreshHeaderCreator { context, layout ->
@@ -36,6 +36,8 @@ class MyApp : Application() {
     }
     override fun onCreate() {
         super.onCreate()
+        localeManager = LocaleManager(this)
+
         registerActivityLifecycleCallbacks()
         // 初始化广告sdk
         if (hasAgreedPrivacy()) {
@@ -104,7 +106,7 @@ class MyApp : Application() {
             }
 
             override fun onInitializationFail(error: String?) {
-
+                LogUtils.d("初始化失败", error)
             }
 
         })
@@ -152,6 +154,8 @@ class MyApp : Application() {
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         MultiDex.install(base)
+//        val config = resources.configuration
+//        localeManager?.updateConfiguration(config)
     }
 
 }

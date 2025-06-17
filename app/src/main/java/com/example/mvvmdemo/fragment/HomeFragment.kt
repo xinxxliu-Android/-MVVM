@@ -83,7 +83,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeFragmentViewModel>() 
         articleAdapter.setOnItemClickListener { adapter, view, position ->
             val article = adapter.data[position]
             // TODO: 处理文章点击事件，跳转到文章详情页
-//            ToastUtils.showShort("点击了文章：${article.title}")
+            ToastUtils.showShort("点击了文章")
         }
         
         // 设置适配器长按事件 - 使用正确的API

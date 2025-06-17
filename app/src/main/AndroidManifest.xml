@@ -85,9 +85,6 @@
         <activity
             android:name=".PointsRedemptionActivity"
             android:exported="false" />
-        <activity
-            android:name=".RewardAdActivity"
-            android:exported="false" />
 
         <!-- Sigmob SDK 配置 -->
         <meta-data

@@ -20,11 +20,6 @@ object RetrofitClient {
     private val cookieInterceptor = Interceptor { chain ->
         val originalRequest = chain.request()
         val cookie = UserManager.getCookie()
-
-        println("=== Cookie Interceptor Debug ===")
-        println("Request URL: ${originalRequest.url}")
-        println("Stored cookie: $cookie")
-
         val newRequest = if (cookie != null) {
             originalRequest.newBuilder()
                 .addHeader("Cookie", cookie)
@@ -33,12 +28,9 @@ object RetrofitClient {
             originalRequest
         }
 
-        println("Request headers:")
         newRequest.headers.forEach { (name, value) ->
-            println("$name: $value")
-        }
-        println("==============================")
 
+        }
         chain.proceed(newRequest)
     }
 
@@ -49,12 +41,7 @@ object RetrofitClient {
 
         // 检查是否是登录请求
         if (request.url.encodedPath.contains("/user/login")) {
-            println("=== Login Response Debug ===")
-            println("Request URL: ${request.url}")
-            println("Response Code: ${response.code}")
 
-            // 打印所有响应头
-            println("All Response Headers:")
             response.headers.forEach { (name, value) ->
                 println("$name: $value")
             }
@@ -65,27 +52,23 @@ object RetrofitClient {
                 // 保存cookie
                 val cookie = setCookieHeaders.joinToString("; ")
                 UserManager.saveCookie(cookie)
-                println("Cookie captured from Set-Cookie: $cookie")
+
             } else {
-                println("No Set-Cookie headers found")
+
                 
                 // 检查是否有其他形式的cookie信息
                 val cookieHeader = response.headers["Cookie"]
                 if (cookieHeader != null) {
                     UserManager.saveCookie(cookieHeader)
-                    println("Cookie from Cookie header: $cookieHeader")
-                } else {
-                    println("No Cookie header found")
+
                 }
                 
                 // 检查响应体是否包含cookie信息
                 if (response.code == 200) {
-                    println("Login successful, but no cookie headers found")
                     // 对于wanandroid API，可能需要手动构造cookie
                     // 通常登录成功后，服务器会返回用户信息，我们可以基于此构造cookie
                 }
             }
-            println("==========================")
         }
         
         response

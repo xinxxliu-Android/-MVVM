@@ -6,7 +6,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.blankj.utilcode.util.LogUtils
-import com.example.mvvmdemo.base.BaseActivity
 import com.example.mvvmdemo.databinding.ActivitySplashAdBinding
 import com.example.mvvmdemo.net.UiState
 import com.example.mvvmdemo.vm.SplashViewAdModel
@@ -14,7 +13,6 @@ import com.sigmob.windad.Splash.WindSplashAD
 import com.sigmob.windad.Splash.WindSplashADListener
 import com.sigmob.windad.Splash.WindSplashAdRequest
 import com.sigmob.windad.WindAdError
-import com.sigmob.windad.WindAds
 
 /**
  * 启动页Activity
