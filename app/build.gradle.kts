@@ -87,8 +87,8 @@ dependencies {
     implementation(libs.androidx.multidex)
 //    MMKV
     implementation (libs.mmkv)
-    implementation("org.greenrobot:eventbus:3.3.1")
+//    eventBusBUS
+    implementation(libs.eventbus)
 //    适配器
     implementation (libs.baserecyclerviewadapterhelper)
-
 }

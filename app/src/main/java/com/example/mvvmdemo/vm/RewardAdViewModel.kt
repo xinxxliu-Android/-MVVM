@@ -1,40 +1,52 @@
 package com.example.mvvmdemo.vm
 
+import android.app.Activity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.blankj.utilcode.util.LogUtils
+import com.example.mvvmdemo.MyApp
 import com.example.mvvmdemo.base.BaseViewModel
-import com.example.mvvmdemo.net.UiState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class RewardAdViewModel :BaseViewModel() {
-    // 广告加载状态
-    private val _adLoadState = MutableLiveData<UiState<Boolean>>()
-    val adLoadState: LiveData<UiState<Boolean>> = _adLoadState
+class RewardAdViewModel : BaseViewModel() {
 
-    // 奖励状态
-    private val _rewardState = MutableLiveData<UiState<Int>>()
-    val rewardState: LiveData<UiState<Int>> = _rewardState
+    private val _adLoadStatus = MutableLiveData<Boolean>()
+    val adLoadStatus: LiveData<Boolean> = _adLoadStatus
 
-    // 设置广告加载中状态
-    fun setAdLoadingState() {
-        _adLoadState.value = UiState.Loading
+    fun loadRewardAd(application: MyApp) {
+//        if (!application.hasAgreedPrivacy()) {
+//            LogUtils.e("RewardAdViewModel", "用户未同意隐私政策，无法加载广告")
+//            _adLoadStatus.postValue(false)
+//            return
+//        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+//                application.loadRewardAd()
+//                _adLoadStatus.postValue(application.isRewardAdReady())
+            } catch (e: Exception) {
+                LogUtils.e("RewardAdViewModel", "加载广告失败: ${e.message}")
+                _adLoadStatus.postValue(false)
+            }
+        }
     }
 
-    // 设置广告加载成功
-    fun setAdLoadSuccess() {
-        _adLoadState.value = UiState.Success(true)
+    fun showRewardAd(application: MyApp, activity: Activity) {
+//        if (!application.hasAgreedPrivacy()) {
+//            LogUtils.e("RewardAdViewModel", "用户未同意隐私政策，无法显示广告")
+//            return
+//        }
+
+//        if (application.isRewardAdReady()) {
+//            application.showRewardAd(activity)
+//        } else {
+//            LogUtils.e("RewardAdViewModel", "广告未准备好")
+//        }
     }
 
-    // 设置广告加载失败
-    fun setAdLoadFailed(errorMsg: String?) {
-        _adLoadState.value = UiState.Error(errorMsg ?: "未知错误")
-    }
-
-    // 发放奖励
-    fun giveReward() {
-        // 这里可以根据实际需求设置奖励数量
-        val rewardAmount = 10
-        _rewardState.value = UiState.Success(rewardAmount)
-
-        // 这里可以添加保存奖励到本地或发送到服务器的逻辑
-    }
+//    fun isAdReady(application: MyApp): Boolean {
+//        return application.isRewardAdReady()
+//    }
 }

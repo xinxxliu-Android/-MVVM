@@ -57,9 +57,6 @@
         android:theme="@style/Base.Theme.MVVMDemo"
         tools:targetApi="31">
         <activity
-            android:name=".WebViewActivity"
-            android:exported="false" />
-        <activity
             android:name=".LoginActivity"
             android:exported="true"/>
         <activity
@@ -83,6 +80,22 @@
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
+
+        <!-- 新增的 Activity -->
+        <activity
+            android:name=".PointsRedemptionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RewardAdActivity"
+            android:exported="false" />
+
+        <!-- Sigmob SDK 配置 -->
+        <meta-data
+            android:name="SIGMOB_APP_ID"
+            android:value="你的AppID" />
+        <meta-data
+            android:name="SIGMOB_APP_KEY"
+            android:value="你的AppKey" />
     </application>
 
 </manifest>

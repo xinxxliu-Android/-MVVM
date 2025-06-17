@@ -1,15 +1,12 @@
 package com.example.mvvmdemo
 
 import android.content.Intent
-import android.os.Bundle
 import android.text.InputType
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.example.mvvmdemo.base.BaseActivity
-import com.example.mvvmdemo.data.User
 import com.example.mvvmdemo.databinding.ActivityLoginBinding
 import com.example.mvvmdemo.net.UiState
-import com.example.mvvmdemo.utils.UserManager
 import com.example.mvvmdemo.vm.LoginViewModel
 
 /**
@@ -19,10 +16,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
     override val viewModel: LoginViewModel by viewModels()
 
     override fun getViewBinding(): ActivityLoginBinding = ActivityLoginBinding.inflate(layoutInflater)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun initView() {
         // 设置生命周期所有者

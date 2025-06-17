@@ -4,6 +4,7 @@ androidxFragmentKtxVersion = "1.5.6"
 banner = "2.2.2"
 baserecyclerviewadapterhelper = "3.0.4"
 coreSplashscreen = "1.0.1"
+eventbus = "3.3.1"
 githubRefreshLayoutKernel = "2.0.6"
 glideVersion = "4.16.0"
 kotlin = "2.0.0"
@@ -45,6 +46,7 @@ androidx-multidex = { module = "androidx.multidex:multidex", version.ref = "mult
 banner = { module = "io.github.youth5201314:banner", version.ref = "banner" }
 baserecyclerviewadapterhelper = { module = "com.github.CymChad:BaseRecyclerViewAdapterHelper", version.ref = "baserecyclerviewadapterhelper" }
 com-squareup-retrofit2-converter-gson8 = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+eventbus = { module = "org.greenrobot:eventbus", version.ref = "eventbus" }
 github-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glideVersion" }
 github-refresh-layout-kernel = { module = "io.github.scwang90:refresh-layout-kernel", version.ref = "githubRefreshLayoutKernel" }
 io-github-scwang90-refresh-footer-classics = { module = "io.github.scwang90:refresh-footer-classics", version.ref = "githubRefreshLayoutKernel" }
