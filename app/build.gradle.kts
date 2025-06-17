@@ -35,7 +35,7 @@ android {
     }
     buildFeatures {
         viewBinding =true
-        dataBinding =true
+        dataBinding  = true
     }
 }
 
@@ -87,7 +87,7 @@ dependencies {
     implementation(libs.androidx.multidex)
 //    MMKV
     implementation (libs.mmkv)
-    implementation (libs.material.v1110)
+    implementation("org.greenrobot:eventbus:3.3.1")
 //    适配器
     implementation (libs.baserecyclerviewadapterhelper)
 

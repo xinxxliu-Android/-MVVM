@@ -2,12 +2,10 @@ package com.example.mvvmdemo.vm
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.mvvmdemo.base.BaseViewModel
 import com.example.mvvmdemo.data.User
 import com.example.mvvmdemo.net.UiState
 import com.example.mvvmdemo.repository.UserRepository
-import kotlinx.coroutines.launch
 
 class LoginViewModel : BaseViewModel() {
     private val userRepository = UserRepository()

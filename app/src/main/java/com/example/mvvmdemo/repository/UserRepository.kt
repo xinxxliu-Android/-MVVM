@@ -7,8 +7,6 @@ import com.example.mvvmdemo.net.ApiService
 import com.example.mvvmdemo.net.RetrofitClient
 import com.example.mvvmdemo.net.UiState
 import com.example.mvvmdemo.utils.UserManager
-import okhttp3.ResponseBody
-import retrofit2.Response
 
 class UserRepository : BaseRepository() {
     private val api = RetrofitClient.instance.create(ApiService::class.java)

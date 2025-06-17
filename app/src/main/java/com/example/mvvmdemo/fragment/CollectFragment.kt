@@ -113,26 +113,30 @@ class CollectFragment : Fragment() {
                 }
                 is UiState.Success -> {
                     if (page == 0) {
-//                        // 下拉刷新
-//                        if (state.data.isEmpty()) {
-//                            // 没有数据，显示空状态
-//                            binding.stateLayout.showEmpty()
-//                        } else {
-//                            // 有数据，显示内容
-//                            binding.stateLayout.showContent()
-//                            articleAdapter.submitList(state.data)
-//                        }
+                        // 下拉刷新
+                        if (state.data.datas.isEmpty()) {
+                            // 没有数据，显示空状态
+                            binding.stateLayout.showEmpty()
+                        } else {
+                            // 有数据，显示内容
+                            binding.stateLayout.showContent()
+                            // 设置所有文章的收藏状态为已收藏
+                            articleAdapter.setArticlesCollectState(state.data.datas.map { it.id })
+                            articleAdapter.submitList(state.data.datas)
+                        }
                         binding.smartRoot.finishRefresh()
                     } else {
-//                        // 加载更多
-//                        if (state.data.isEmpty()) {
-//                            // 没有更多数据
-//                            binding.smartRoot.finishLoadMoreWithNoMoreData()
-//                        } else {
-//                            // 添加更多数据
-//                            articleAdapter.addList(state.data)
-//                            binding.smartRoot.finishLoadMore()
-//                        }
+                        // 加载更多
+                        if (state.data.datas.isEmpty()) {
+                            // 没有更多数据
+                            binding.smartRoot.finishLoadMoreWithNoMoreData()
+                        } else {
+                            // 添加更多数据
+                            // 设置新加载文章的收藏状态为已收藏
+                            articleAdapter.setArticlesCollectState(state.data.datas.map { it.id })
+                            articleAdapter.addList(state.data.datas)
+                            binding.smartRoot.finishLoadMore()
+                        }
                     }
                 }
                 is UiState.Empty -> {
@@ -163,14 +167,14 @@ class CollectFragment : Fragment() {
                 is UiState.Loading -> {
                     // 取消收藏操作进行中
                 }
-//                is UiState.Success -> {
-//                    // 取消收藏成功，UI已经在handleUncollectArticle中更新
-//                    ToastUtils.showShort("取消收藏成功")
-//                }
-//                is UiState.Error -> {
-//                    // 取消收藏失败，恢复原状态
-//                    ToastUtils.showShort(state.message ?: "取消收藏失败")
-//                }
+                is UiState.Success -> {
+                    // 取消收藏成功，UI已经在handleUncollectArticle中更新
+                    ToastUtils.showShort("取消收藏成功")
+                }
+                is UiState.Error -> {
+                    // 取消收藏失败，恢复原状态
+                    ToastUtils.showShort(state.message ?: "取消收藏失败")
+                }
                 else -> {}
             }
         }
