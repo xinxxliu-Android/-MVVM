@@ -7,12 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
 import com.example.mvvmdemo.adapter.ArticleAdapter
 import com.example.mvvmdemo.databinding.FragmentCollectBinding
 import com.example.mvvmdemo.net.UiState
 import com.example.mvvmdemo.utils.UserManager
 import com.example.mvvmdemo.vm.CollectViewModel
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import com.example.mvvmdemo.event.CollectEvent
 
 /**
  * 收藏页面Fragment
@@ -65,13 +70,15 @@ class CollectFragment : Fragment() {
     private fun initView() {
         // 初始化适配器
         articleAdapter = ArticleAdapter()
+        binding.recycle.layoutManager = LinearLayoutManager(context)
+        
+        // 设置适配器Context（用于登录检查）
         articleAdapter.setActivityContext(requireContext())
         
         // 设置适配器点击事件
         articleAdapter.setOnItemClickListener { adapter, view, position ->
             val article = adapter.data[position]
             // TODO: 处理文章点击事件，跳转到文章详情页
-//            ToastUtils.showShort("点击了文章：${article.title}")
         }
         
         // 设置适配器收藏事件
@@ -84,6 +91,7 @@ class CollectFragment : Fragment() {
         binding.smartRoot.setOnRefreshListener {
             page = 0 // 重置页码
             viewModel.fetchCollectedArticles(page)
+            binding.stateLayout.showContent()
         }
         
         // 加载更多
@@ -180,6 +188,25 @@ class CollectFragment : Fragment() {
         }
     }
     
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onCollectEvent(event: CollectEvent) {
+        // 更新文章收藏状态
+        val position = articleAdapter.data.indexOfFirst { it.id == event.articleId }
+        if (position != -1) {
+            articleAdapter.updateArticleCollectState(position, event.isCollected)
+        }
+    }
+    
     /**
      * 处理取消收藏
      */
@@ -192,6 +219,9 @@ class CollectFragment : Fragment() {
         
         // 调用取消收藏API
         viewModel.uncollectArticle(article.id)
+
+        // 发送收藏状态变化事件
+        EventBus.getDefault().post(CollectEvent(article.id, !currentCollectedState))
     }
     
     override fun onDestroyView() {

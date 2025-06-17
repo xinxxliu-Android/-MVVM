@@ -6,6 +6,9 @@ import android.content.Context
 import android.os.Bundle
 import androidx.multidex.MultiDex
 import com.blankj.utilcode.util.LogUtils
+import com.scwang.smart.refresh.footer.ClassicsFooter
+import com.scwang.smart.refresh.header.ClassicsHeader
+import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.sigmob.windad.OnInitializationListener
 import com.sigmob.windad.OnStartListener
 import com.sigmob.windad.WindAdOptions
@@ -16,6 +19,21 @@ import xcrash.XCrash
 
 class MyApp : Application() {
 
+    companion object {
+        //static 代码段可以防止内存泄露
+        init {
+            //设置全局的Header构建器
+            SmartRefreshLayout.setDefaultRefreshHeaderCreator { context, layout ->
+//                layout.setPrimaryColorsId(R.color.purple_500, android.R.color.white) //全局设置主题颜色
+                ClassicsHeader(context) //指定为经典Header，默认是 贝塞尔雷达Header
+            }
+
+            //设置全局的Footer构建器
+            SmartRefreshLayout.setDefaultRefreshFooterCreator { context, layout ->
+                ClassicsFooter(context).setDrawableSize(20f) //指定为经典Footer，默认是 BallPulseFooter
+            }
+        }
+    }
     override fun onCreate() {
         super.onCreate()
         registerActivityLifecycleCallbacks()

@@ -24,6 +24,10 @@ import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
 import com.youth.banner.indicator.CircleIndicator
 import com.example.mvvmdemo.utils.UserManager
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import com.example.mvvmdemo.event.CollectEvent
 
 /**
  * 首页Fragment
@@ -263,7 +267,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeFragmentViewModel>() 
      * 处理文章收藏
      */
     private fun handleCollectArticle(article: Article, position: Int) {
-
         // 获取当前收藏状态
         val currentCollectedState = articleAdapter.isArticleCollected(article.id)
         
@@ -277,6 +280,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeFragmentViewModel>() 
         } else {
             // 当前是未收藏状态，执行收藏
             viewModel.collectArticle(article.id)
+        }
+
+        // 发送收藏状态变化事件
+        EventBus.getDefault().post(CollectEvent(article.id, !currentCollectedState))
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onCollectEvent(event: CollectEvent) {
+        // 更新文章收藏状态
+        val position = articleAdapter.data.indexOfFirst { it.id == event.articleId }
+        if (position != -1) {
+            articleAdapter.updateArticleCollectState(position, event.isCollected)
         }
     }
 }
