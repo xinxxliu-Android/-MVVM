@@ -154,30 +154,4 @@ class MyApp : Application() {
         MultiDex.install(base)
     }
 
-//    companion object {
-//        init {
-//            //使用static代码段可以防止内存泄漏
-//            //全局设置默认的 Header
-//            SmartRefreshLayout.setDefaultRefreshHeaderCreator { context, layout -> //开始设置全局的基本参数（这里设置的属性只跟下面的MaterialHeader绑定，其他Header不会生效，能覆盖DefaultRefreshInitializer的属性和Xml设置的属性）
-////                layout.setEnableHeaderTranslationContent(false);
-//                layout.setEnableFooterFollowWhenNoMoreData(true);
-////                layout.setEnableLoadMoreWhenContentNotFull(true);
-////                layout.setReboundDuration(100);
-////                MaterialHeader(context).setColorSchemeColors(
-////                    ContextCompat.getColor(
-////                        context,
-////                        R.color.color_4fa6b1
-////                    )
-////                )
-//            }
-//
-//            SmartRefreshLayout.setDefaultRefreshFooterCreator { context, layout -> //                layout.setEnableFooterFollowWhenNoMoreData(true);
-//                layout.setEnableLoadMoreWhenContentNotFull(true);
-//                layout.setEnableFooterFollowWhenNoMoreData(true);
-////                layout.setReboundDuration(100);
-//                ClassicsFooter(context)
-//
-//            }
-//        }
-//    }
 }

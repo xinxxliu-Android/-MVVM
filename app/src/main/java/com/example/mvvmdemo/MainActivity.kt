@@ -89,17 +89,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             true
         }
 
-//        // 初始化RecyclerView
-//        articleAdapter = ArticleAdapter()
-//        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-//        binding.recyclerView.adapter = articleAdapter
-//        // 重试按钮
-//        binding.btnRetry.setOnClickListener {
-//            viewModel.fetchHomeArticles(0)
-//        }
-//
-//        // 首次加载
-//        viewModel.fetchHomeArticles(0)
 
 
     }
@@ -111,19 +100,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun observeViewModel() {
-
-//        viewModel.articleState.observe(this) { state ->
-//            when (state) {
-//                is UiState.Loading -> showLoading()
-//                is UiState.Success -> {
-//                    showContentView()
-//                    articleAdapter.submitList(state.data)
-//                }
-//
-//                is UiState.Empty -> showEmptyView()
-//                is UiState.Error -> showError(state.message)
-//            }
-//        }
 
 
     }
