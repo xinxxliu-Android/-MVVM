@@ -6,12 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.example.mvvmdemo.MainActivity
+import com.example.mvvmdemo.ToolbarTitleListener
 import com.example.mvvmdemo.net.UiState
-import java.lang.reflect.ParameterizedType
 
 abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel> : Fragment() {
     protected lateinit var binding: VB
     protected abstract val viewModel: VM
+    
+    // Toolbar标题更新监听器
+    protected var toolbarTitleListener: ToolbarTitleListener? = null
 
     //    子类实现，返回对应的ViewBinding实例
     abstract fun getViewBinding(inflater: LayoutInflater,
@@ -27,9 +31,20 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel> : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // 获取ToolbarTitleListener
+        toolbarTitleListener = activity as? ToolbarTitleListener
         initView()
         observeViewModel()
     }
+    
+    /**
+     * 更新Toolbar标题
+     * @param title 要显示的标题
+     */
+    protected fun updateToolbarTitle(title: String) {
+        toolbarTitleListener?.updateToolbarTitle(title)
+    }
+    
     //    监听通用UI状态，自动分发到对应方法
     private fun observeUiState() {
         viewModel.uiState.observe(this) { state ->

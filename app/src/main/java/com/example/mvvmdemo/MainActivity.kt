@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
@@ -16,7 +17,14 @@ import com.example.mvvmdemo.fragment.SquareFragment
 import com.example.mvvmdemo.utils.UserManager
 import com.example.mvvmdemo.vm.MainViewModel
 
-class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
+/**
+ * Toolbar标题更新接口
+ */
+interface ToolbarTitleListener {
+    fun updateToolbarTitle(title: String)
+}
+
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), ToolbarTitleListener {
     override val viewModel: MainViewModel by viewModels()
 
     private lateinit var homeFragment: HomeFragment
@@ -33,15 +41,36 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override fun getViewBinding() = ActivityMainBinding.inflate(layoutInflater)
 
     override fun initView() {
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        binding.toolbar.setNavigationIcon(android.R.drawable.ic_menu_sort_by_size)
-        binding.toolbar.setNavigationOnClickListener {
-            binding.drawerLayout.openDrawer(GravityCompat.START)
-        }
-
+        initToolbar()
+        initDrawerLayout()
         initFragments()
         setupNavigationListeners()
+    }
+
+    /**
+     * 初始化Toolbar
+     */
+    private fun initToolbar() {
+        setSupportActionBar(binding.appBarLayout.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.appBarLayout.toolbar.setNavigationOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
+    }
+
+    /**
+     * 初始化抽屉布局
+     */
+    private fun initDrawerLayout() {
+        val toggle = ActionBarDrawerToggle(
+            this,
+            binding.drawerLayout,
+            binding.appBarLayout.toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
     }
 
     private fun initFragments() {
@@ -104,6 +133,18 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
+    /**
+     * 更新Toolbar标题
+     * @param title 要显示的标题
+     */
+    override fun updateToolbarTitle(title: String) {
+        // 使用自定义的TextView显示标题
+        binding.appBarLayout.tvTitle.text = title
+        binding.appBarLayout.tvTitle.visibility = View.VISIBLE
+        // 隐藏Toolbar的默认标题
+        binding.appBarLayout.toolbar.title = ""
+    }
+
     private fun switchFragment(targetFragment: Fragment, targetTag: String) {
         if (currentFragmentTag == targetTag) {
             return
@@ -118,6 +159,23 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         transaction.show(targetFragment)
         transaction.commit()
         currentFragmentTag = targetTag
+        
+        // 根据当前fragment更新Toolbar标题
+        updateToolbarTitleByFragment(targetTag)
+    }
+
+    /**
+     * 根据fragment标签更新Toolbar标题
+     * @param fragmentTag fragment的标签
+     */
+    private fun updateToolbarTitleByFragment(fragmentTag: String) {
+        val title = when (fragmentTag) {
+            TAG_HOME_FRAGMENT -> getString(R.string.home)
+            TAG_SQUARE_FRAGMENT -> getString(R.string.square)
+            TAG_COLLECT_FRAGMENT -> getString(R.string.collect)
+            else -> getString(R.string.app_name)
+        }
+        updateToolbarTitle(title)
     }
 
     override fun observeViewModel() {

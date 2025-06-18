@@ -116,23 +116,25 @@ class MyApp : Application() {
 
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-
+                LogUtils.d("App","onActivityCreated"+activity.localClassName)
             }
 
             override fun onActivityStarted(activity: Activity) {
-
+                LogUtils.d("App","onActivityStarted"+activity.localClassName)
             }
 
             override fun onActivityResumed(activity: Activity) {
-
+                LogUtils.d("App","onActivityResumed"+activity.localClassName)
 
             }
 
             override fun onActivityPaused(activity: Activity) {
+                LogUtils.d("App","onActivityPaused"+activity.localClassName)
 
             }
 
             override fun onActivityStopped(activity: Activity) {
+                LogUtils.d("App","onActivityStopped"+activity.localClassName)
 
             }
 
@@ -141,6 +143,7 @@ class MyApp : Application() {
             }
 
             override fun onActivityDestroyed(activity: Activity) {
+                LogUtils.d("App","onActivityDestroyed"+activity.localClassName)
 
             }
         })

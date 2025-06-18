@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.mvvmdemo.RewardAdActivity
 import com.example.mvvmdemo.PointsRedemptionActivity
+import com.example.mvvmdemo.R
 import com.example.mvvmdemo.base.BaseFragment
 import com.example.mvvmdemo.databinding.FragmentSquareBinding
 import com.example.mvvmdemo.vm.SquareFragmentViewModel

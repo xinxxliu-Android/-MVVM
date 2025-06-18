@@ -90,4 +90,7 @@ dependencies {
     implementation(libs.eventbus)
 //    适配器
     implementation (libs.baserecyclerviewadapterhelper)
+//    内存泄露检测
+    implementation (libs.leakcanary.android)
+
 }

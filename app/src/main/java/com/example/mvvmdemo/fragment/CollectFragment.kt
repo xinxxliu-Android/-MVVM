@@ -9,8 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ToastUtils
+import com.example.mvvmdemo.R
 import com.example.mvvmdemo.adapter.ArticleAdapter
+import com.example.mvvmdemo.base.BaseFragment
 import com.example.mvvmdemo.databinding.FragmentCollectBinding
+import com.example.mvvmdemo.databinding.FragmentHomeBinding
 import com.example.mvvmdemo.net.UiState
 import com.example.mvvmdemo.utils.UserManager
 import com.example.mvvmdemo.vm.CollectViewModel
@@ -32,25 +35,16 @@ import com.example.mvvmdemo.event.CollectEvent
  * 1. 在MainActivity中添加到ViewPager
  * 2. 需要登录才能访问
  */
-class CollectFragment : Fragment() {
-    
-    private var _binding: FragmentCollectBinding? = null
-    private val binding get() = _binding!!
-    
-    private val viewModel: CollectViewModel by viewModels()
+class CollectFragment : BaseFragment<FragmentCollectBinding,CollectViewModel>() {
+    override val viewModel: CollectViewModel by viewModels()
+    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentCollectBinding.inflate(inflater, container, false)
+
+
     private lateinit var articleAdapter: ArticleAdapter
     
     private var page = 0
-    
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentCollectBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-    
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
@@ -67,7 +61,7 @@ class CollectFragment : Fragment() {
         viewModel.fetchCollectedArticles(0)
     }
     
-    private fun initView() {
+    override fun initView() {
         // 初始化适配器
         articleAdapter = ArticleAdapter()
         binding.recycle.layoutManager = LinearLayoutManager(context)
@@ -109,7 +103,7 @@ class CollectFragment : Fragment() {
         }
     }
     
-    private fun observeViewModel() {
+    override fun observeViewModel() {
         // 观察收藏文章列表数据
         viewModel.articleState.observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -187,7 +181,11 @@ class CollectFragment : Fragment() {
             }
         }
     }
-    
+
+    override fun showEmptyView() {
+        binding.stateLayout.showEmpty()
+    }
+
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -222,10 +220,5 @@ class CollectFragment : Fragment() {
 
         // 发送收藏状态变化事件
         EventBus.getDefault().post(CollectEvent(article.id, !currentCollectedState))
-    }
-    
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 } 

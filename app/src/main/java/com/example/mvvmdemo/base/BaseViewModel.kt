@@ -25,7 +25,7 @@ open class BaseViewModel : ViewModel() {
      * 通用的UI状态LiveData
      * 用于在需要时监听通用UI状态变化
      */
-    protected val _uiState = MutableLiveData<UiState<Any>>()
+    private val _uiState = MutableLiveData<UiState<Any>>()
     val uiState: LiveData<UiState<Any>> = _uiState
 
     /**

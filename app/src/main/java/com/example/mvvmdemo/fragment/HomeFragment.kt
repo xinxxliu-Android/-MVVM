@@ -11,6 +11,7 @@ import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.example.mvvmdemo.R
 import com.example.mvvmdemo.adapter.ArticleAdapter
 import com.example.mvvmdemo.base.BaseFragment
 import com.example.mvvmdemo.data.Article
