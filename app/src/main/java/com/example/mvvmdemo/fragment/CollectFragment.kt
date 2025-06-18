@@ -88,7 +88,8 @@ class CollectFragment : BaseFragment<FragmentCollectBinding,CollectViewModel>() 
         binding.smartRoot.setOnRefreshListener {
             page = 0 // 重置页码
             viewModel.fetchCollectedArticles(page)
-            binding.stateLayout.showContent()
+            // 移除直接调用showContent()，让状态管理完全由observeViewModel()处理
+            // binding.stateLayout.showContent()
         }
 
 
@@ -149,6 +150,7 @@ class CollectFragment : BaseFragment<FragmentCollectBinding,CollectViewModel>() 
                     if (page == 0) {
                         // 首次加载没有数据
                         binding.stateLayout.showEmpty()
+                        binding.smartRoot.finishRefresh()
                     } else {
                         // 加载更多没有数据
                         binding.smartRoot.finishLoadMoreWithNoMoreData()
@@ -158,6 +160,7 @@ class CollectFragment : BaseFragment<FragmentCollectBinding,CollectViewModel>() 
                     if (page == 0) {
                         // 首次加载失败
                         binding.stateLayout.showError("加载失败")
+                        binding.smartRoot.finishRefresh()
                     } else {
                         // 加载更多失败
                         binding.smartRoot.finishLoadMore(false)
@@ -208,17 +211,7 @@ class CollectFragment : BaseFragment<FragmentCollectBinding,CollectViewModel>() 
         // binding.smartRoot.autoRefresh(2000)
     }
 
-    /**
-     * 刷新收藏数据
-     * 每次进入收藏页面时调用，确保显示最新数据
-     */
-    private fun refreshData() {
-        if (UserManager.isLoggedIn()) {
-            page = 0 // 重置页码
-            // 加载最新数据
-            viewModel.fetchCollectedArticles(page)
-        }
-    }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCollectEvent(event: CollectEvent) {
