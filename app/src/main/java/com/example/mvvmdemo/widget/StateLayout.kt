@@ -30,7 +30,6 @@ class StateLayout @JvmOverloads constructor(
     private var onRetryClickListener: (() -> Unit)? = null
 
     init {
-
         binding.btnRetry.setOnClickListener {
             onRetryClickListener?.invoke()
         }

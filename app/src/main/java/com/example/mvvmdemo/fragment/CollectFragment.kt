@@ -56,15 +56,19 @@ class CollectFragment : BaseFragment<FragmentCollectBinding,CollectViewModel>() 
 
         initView()
         observeViewModel()
-        // 首次加载时刷新数据
-        refreshData()
+        // 移除首次加载时自动刷新数据
+        // refreshData()
+        
+        // 显示初始状态，提示用户下拉刷新
+        binding.stateLayout.showEmpty()
     }
 
     override fun initView() {
         // 初始化适配器
         articleAdapter = ArticleAdapter()
         binding.recycle.layoutManager = LinearLayoutManager(context)
-        binding.smartRoot.autoRefresh()
+        // 移除自动刷新
+        // binding.smartRoot.autoRefresh()
         // 设置适配器Context（用于登录检查）
         articleAdapter.setActivityContext(requireContext())
 
@@ -198,10 +202,10 @@ class CollectFragment : BaseFragment<FragmentCollectBinding,CollectViewModel>() 
 
     override fun onResume() {
         super.onResume()
-        // 每次进入收藏页面都刷新数据
-//        refreshData()
-
-        binding.smartRoot.autoRefresh(2000)
+        // 移除每次进入收藏页面都刷新数据
+        // refreshData()
+        // 移除自动刷新
+        // binding.smartRoot.autoRefresh(2000)
     }
 
     /**
