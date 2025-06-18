@@ -1,5 +1,8 @@
 package com.example.mvvmdemo.data
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 data class ArticlePage(
     val curPage: Int,
     val datas: List<Article>,
@@ -7,6 +10,8 @@ data class ArticlePage(
     val size: Int,
     val total: Int
 )
+
+@Parcelize
 data class Article(
     val id: Int,
     val title: String,
@@ -15,4 +20,4 @@ data class Article(
     val shareUser: String?,
     val niceDate: String,
     val chapterName: String,
-)
+) : Parcelable

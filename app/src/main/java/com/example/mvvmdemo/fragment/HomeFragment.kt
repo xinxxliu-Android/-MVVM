@@ -90,7 +90,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeFragmentViewModel>() 
         // 设置适配器长按事件 - 使用正确的API
         articleAdapter.setOnItemLongClickListener { adapter, view, position ->
             val article = adapter.data[position]
-            // TODO: 处理文章长按事件，显示操作菜单
 //            ToastUtils.showShort("长按了文章：${article.title}")
             true // 返回true表示消费了长按事件
         }
@@ -304,5 +303,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeFragmentViewModel>() 
         if (position != -1) {
             articleAdapter.updateArticleCollectState(position, event.isCollected)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // 清理adapter中的资源
+        articleAdapter.cleanup()
     }
 }

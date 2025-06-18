@@ -13,6 +13,7 @@ import com.example.mvvmdemo.base.BaseActivity
 import com.example.mvvmdemo.databinding.ActivityMainBinding
 import com.example.mvvmdemo.fragment.CollectFragment
 import com.example.mvvmdemo.fragment.HomeFragment
+import com.example.mvvmdemo.fragment.OfficialFragment
 import com.example.mvvmdemo.fragment.SquareFragment
 import com.example.mvvmdemo.utils.UserManager
 import com.example.mvvmdemo.vm.MainViewModel
@@ -30,12 +31,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), Toolbar
     private lateinit var homeFragment: HomeFragment
     private lateinit var squareFragment: SquareFragment
     private lateinit var collectFragment: CollectFragment
+    private lateinit var officialFragment : OfficialFragment
     private var currentFragmentTag: String = "" // Keep track of current fragment by tag
 
     companion object {
         private const val TAG_HOME_FRAGMENT = "HomeFragment"
         private const val TAG_SQUARE_FRAGMENT = "SquareFragment"
         private const val TAG_COLLECT_FRAGMENT = "CollectFragment"
+        private const val TAG_OFFICIAL_FRAGMENT = "OfficialFragment"
     }
 
     override fun getViewBinding() = ActivityMainBinding.inflate(layoutInflater)
@@ -77,6 +80,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), Toolbar
         homeFragment = supportFragmentManager.findFragmentByTag(TAG_HOME_FRAGMENT) as? HomeFragment ?: HomeFragment()
         squareFragment = supportFragmentManager.findFragmentByTag(TAG_SQUARE_FRAGMENT) as? SquareFragment ?: SquareFragment()
         collectFragment = supportFragmentManager.findFragmentByTag(TAG_COLLECT_FRAGMENT) as? CollectFragment ?: CollectFragment()
+        officialFragment = supportFragmentManager.findFragmentByTag(TAG_OFFICIAL_FRAGMENT) as? OfficialFragment ?: OfficialFragment()
 
         // Add fragments if they haven't been added yet
         if (!homeFragment.isAdded) {
@@ -87,6 +91,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), Toolbar
         }
         if (!collectFragment.isAdded) {
             supportFragmentManager.beginTransaction().add(R.id.fragment_container, collectFragment, TAG_COLLECT_FRAGMENT).hide(collectFragment).commit()
+        }
+        if (!officialFragment.isAdded){
+            supportFragmentManager.beginTransaction().add(R.id.fragment_container, officialFragment, TAG_OFFICIAL_FRAGMENT).hide(officialFragment).commit()
         }
 
         switchFragment(homeFragment, TAG_HOME_FRAGMENT)
@@ -128,6 +135,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), Toolbar
             when (item.itemId) {
                 R.id.action_home -> switchFragment(homeFragment, TAG_HOME_FRAGMENT)
                 R.id.action_square -> switchFragment(squareFragment, TAG_SQUARE_FRAGMENT)
+                R.id.action_wechat -> switchFragment(officialFragment, TAG_OFFICIAL_FRAGMENT)
             }
             true
         }
@@ -173,6 +181,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), Toolbar
             TAG_HOME_FRAGMENT -> getString(R.string.home)
             TAG_SQUARE_FRAGMENT -> getString(R.string.square)
             TAG_COLLECT_FRAGMENT -> getString(R.string.collect)
+            TAG_OFFICIAL_FRAGMENT ->getString(R.string.wechat)
             else -> getString(R.string.app_name)
         }
         updateToolbarTitle(title)

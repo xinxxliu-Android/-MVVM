@@ -3,6 +3,7 @@ package com.example.mvvmdemo.net
 import com.example.mvvmdemo.base.BaseResponse
 import com.example.mvvmdemo.data.ArticlePage
 import com.example.mvvmdemo.data.Banner
+import com.example.mvvmdemo.data.OfficialAccount
 import com.example.mvvmdemo.data.User
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -62,5 +63,20 @@ interface ApiService {
      */
     @GET("lg/collect/list/{page}/json")
     suspend fun getCollectedArticles(@Path("page") page: Int): BaseResponse<ArticlePage>
+    
+    /**
+     * 获取公众号列表
+     */
+    @GET("wxarticle/chapters/json")
+    suspend fun getWxArticle(): BaseResponse<List<OfficialAccount>>
+
+    /**
+     * 获取公众号文章列表
+     */
+    @GET("wxarticle/list/{officialAccountId}/{page}/json")
+    suspend fun getOfficialArticles(
+        @Path("officialAccountId") officialAccountId: Int,
+        @Path("page") page: Int
+    ): BaseResponse<ArticlePage>
 
 }

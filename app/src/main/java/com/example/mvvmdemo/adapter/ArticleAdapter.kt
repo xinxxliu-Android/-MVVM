@@ -198,4 +198,21 @@ class ArticleAdapter : BaseQuickAdapter<Article, BaseViewHolder>
         data.clear()
         notifyDataSetChanged()
     }
+
+    /**
+     * 清理所有资源
+     * 在Fragment销毁时调用
+     */
+    fun cleanup() {
+        // 清理监听器
+        onLikeClickListener = null
+        activityContext = null
+        // 清理收藏状态
+        collectedArticles.clear()
+        // 清理数据
+        data.clear()
+        // 移除所有监听器
+        setOnItemClickListener(null)
+        setOnItemLongClickListener(null)
+    }
 }

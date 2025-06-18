@@ -39,4 +39,11 @@
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">@dimen/sp_18</item>
     </style>
+
+    <!-- Tab文本样式，禁用自动大写 -->
+    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textAllCaps">false</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>

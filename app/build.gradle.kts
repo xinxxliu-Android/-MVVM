@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+//    parcelize 插件
+    id("kotlin-parcelize")
 }
 
 android {
@@ -92,5 +94,7 @@ dependencies {
     implementation (libs.baserecyclerviewadapterhelper)
 //    内存泄露检测
     implementation (libs.leakcanary.android)
+//    ViewPager2
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
 
 }

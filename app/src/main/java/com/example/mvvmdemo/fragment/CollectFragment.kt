@@ -47,75 +47,75 @@ class CollectFragment : BaseFragment<FragmentCollectBinding,CollectViewModel>() 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         // 检查登录状态
         if (!UserManager.isLoggedIn()) {
             UserManager.goToLogin(requireContext())
             return
         }
-        
+
         initView()
         observeViewModel()
-        
-        // 首次加载
-        viewModel.fetchCollectedArticles(0)
+        // 首次加载时刷新数据
+        refreshData()
     }
-    
+
     override fun initView() {
         // 初始化适配器
         articleAdapter = ArticleAdapter()
         binding.recycle.layoutManager = LinearLayoutManager(context)
-        
+        binding.smartRoot.autoRefresh()
         // 设置适配器Context（用于登录检查）
         articleAdapter.setActivityContext(requireContext())
-        
+
         // 设置适配器点击事件
         articleAdapter.setOnItemClickListener { adapter, view, position ->
             val article = adapter.data[position]
             // TODO: 处理文章点击事件，跳转到文章详情页
         }
-        
+
         // 设置适配器收藏事件
         articleAdapter.setOnLikeClickListener { article, position ->
             // 处理取消收藏逻辑
             handleUncollectArticle(article, position)
         }
-        
+
         // 下拉刷新
         binding.smartRoot.setOnRefreshListener {
             page = 0 // 重置页码
             viewModel.fetchCollectedArticles(page)
             binding.stateLayout.showContent()
         }
-        
+
+
         // 加载更多
         binding.smartRoot.setOnLoadMoreListener {
             page++
             viewModel.fetchCollectedArticles(page)
         }
-        
+
         binding.recycle.adapter = articleAdapter
-        
+
         // 设置重试回调
         binding.stateLayout.setOnRetryClickListener {
             page = 0 // 重置页码
             viewModel.fetchCollectedArticles(0)
         }
     }
-    
+
     override fun observeViewModel() {
         // 观察收藏文章列表数据
         viewModel.articleState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
-                    if (page == 0) {
-                        // 首次加载或下拉刷新时显示加载状态
+                    if (page == 0){
                         binding.stateLayout.showLoading()
                     }
+
                 }
                 is UiState.Success -> {
                     if (page == 0) {
-                        // 下拉刷新
+                        // 下拉刷新或首次加载
                         if (state.data.datas.isEmpty()) {
                             // 没有数据，显示空状态
                             binding.stateLayout.showEmpty()
@@ -162,7 +162,7 @@ class CollectFragment : BaseFragment<FragmentCollectBinding,CollectViewModel>() 
                 }
             }
         }
-        
+
         // 观察取消收藏状态
         viewModel.uncollectState.observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -194,6 +194,26 @@ class CollectFragment : BaseFragment<FragmentCollectBinding,CollectViewModel>() 
     override fun onStop() {
         super.onStop()
         EventBus.getDefault().unregister(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // 每次进入收藏页面都刷新数据
+//        refreshData()
+
+        binding.smartRoot.autoRefresh(2000)
+    }
+
+    /**
+     * 刷新收藏数据
+     * 每次进入收藏页面时调用，确保显示最新数据
+     */
+    private fun refreshData() {
+        if (UserManager.isLoggedIn()) {
+            page = 0 // 重置页码
+            // 加载最新数据
+            viewModel.fetchCollectedArticles(page)
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
